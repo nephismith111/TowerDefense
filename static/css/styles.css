@@ -109,9 +109,14 @@ body {
 }
 
 .tower-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    justify-content: space-between;
+}
+
+.tower-grid button {
+    flex: 0 0 calc(50% - 5px);
 }
 
 .tower-grid button {
