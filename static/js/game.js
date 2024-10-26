@@ -126,7 +126,7 @@ const CONFIG = {
         SPREADSHOT: {
             id: 'spreadshot',
             cost: 250,
-            range: 140,
+            range: 200,
             damage: 15,
             fireRate: 1200,
             color: '#f1c40f',
@@ -425,7 +425,7 @@ class Tower {
         }
 
         // Draw special effects
-        if (this.special === 'laser' && this.target) {
+        if (this.special === 'laser' && this.target && this.target.health > 0) {
             // Draw laser beam
             ctx.beginPath();
             ctx.moveTo(this.x, this.y);
@@ -823,7 +823,7 @@ class GameState {
                 
                 const now = Date.now();
                 // Calculate fire rate based on wave number (gets faster as waves progress)
-                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate / Math.sqrt(this.wave);
+                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 + Math.log(this.wave) / 2);
                 
                 if (now - enemy.lastShot >= fireRate) {
                     this.towers.forEach(tower => {
