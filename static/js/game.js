@@ -48,7 +48,11 @@ const CONFIG = {
             damage: 10,
             fireRate: 1000,
             color: '#3498db',
-            name: 'Balanced Tower'
+            name: 'Balanced Tower',
+            style: {
+                border: '2px solid #2980b9',
+                shadow: '0 0 10px rgba(52, 152, 219, 0.5)'
+            }
         },
         RAPID: {
             id: 'rapid',
@@ -148,7 +152,11 @@ const CONFIG = {
             value: 10,
             color: '#e74c3c',
             size: 10,
-            description: 'Standard Baddie'
+            description: 'Standard Baddie',
+            style: {
+                border: '2px solid #c0392b',
+                shadow: '0 0 8px rgba(231, 76, 60, 0.6)'
+            }
         },
         SLOW_TANK: {
             id: 'slow_tank',
@@ -348,10 +356,29 @@ class Tower {
     }
 
     draw(ctx) {
+        // Draw shadow if specified
+        if (this.style?.shadow) {
+            ctx.shadowColor = this.style.shadow.split('rgba')[1].slice(0, -1);
+            ctx.shadowBlur = parseInt(this.style.shadow.match(/\d+/)[0]);
+        }
+
+        // Draw main tower body
         ctx.beginPath();
         ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
+
+        // Draw border if specified
+        if (this.style?.border) {
+            ctx.strokeStyle = this.style.border.split(' ')[2];
+            ctx.lineWidth = parseInt(this.style.border.split(' ')[0]);
+            ctx.stroke();
+        }
+
+        // Reset shadow
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1;
 
         // Draw range circle if selected
         if (game.selectedTower && game.selectedTower === this.id) {
@@ -451,10 +478,28 @@ class Enemy {
             return; // Do not draw if towers can't see invisible enemies
         }
 
+        // Draw shadow if specified
+        if (this.style?.shadow) {
+            ctx.shadowColor = this.style.shadow.split('rgba')[1].slice(0, -1);
+            ctx.shadowBlur = parseInt(this.style.shadow.match(/\d+/)[0]);
+        }
+
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
+
+        // Draw border if specified
+        if (this.style?.border) {
+            ctx.strokeStyle = this.style.border.split(' ')[2];
+            ctx.lineWidth = parseInt(this.style.border.split(' ')[0]);
+            ctx.stroke();
+        }
+
+        // Reset shadow and line width
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1;
 
         // Health bar
         const healthPercent = this.health / this.maxHealth;
