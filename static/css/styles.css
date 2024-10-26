@@ -21,6 +21,32 @@ body {
     background: #2f3640;
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    cursor: pointer;
+}
+
+#towerSelection {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#towerSelection button {
+    padding: 10px 20px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#towerSelection button:hover {
+    background: #2980b9;
+}
+
+#towerSelection button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
 }
 
 .hud {

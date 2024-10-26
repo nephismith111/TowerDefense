@@ -28,6 +28,15 @@ const CONFIG = {
     CANVAS_WIDTH: 800,
     CANVAS_HEIGHT: 600,
     
+    PATH_POINTS: [
+        {x: 0, y: 120},
+        {x: 120, y: 120},
+        {x: 120, y: 480},
+        {x: 480, y: 480},
+        {x: 480, y: 120},
+        {x: 800, y: 120}
+    ],
+    
     TOWER_TYPES: {
         BASIC: {
             id: 'basic',
@@ -204,8 +213,35 @@ class GameState {
         this.enemies = [];
         this.projectiles = [];
         this.selectedTower = null;
+        this.waveInProgress = false;
+        this.enemiesSpawned = 0;
+        this.maxEnemiesPerWave = 10;
+        this.lastSpawnTime = 0;
+        this.spawnInterval = 1000;
         
+        this.initializeTowerSelection();
         Logger.info('Game state initialized');
+    }
+
+    initializeTowerSelection() {
+        const towerSelection = document.getElementById('towerSelection');
+        towerSelection.innerHTML = '';
+        
+        Object.entries(CONFIG.TOWER_TYPES).forEach(([key, tower]) => {
+            const button = document.createElement('button');
+            button.textContent = `${tower.name} ($${tower.cost})`;
+            button.onclick = () => this.selectTower(tower.id);
+            towerSelection.appendChild(button);
+        });
+    }
+
+    selectTower(towerId) {
+        if (this.money >= CONFIG.TOWER_TYPES[towerId.toUpperCase()].cost) {
+            this.selectedTower = towerId;
+            Logger.info(`Selected ${towerId} tower`);
+        } else {
+            Logger.warn('Not enough money for this tower');
+        }
     }
 
     update() {
@@ -242,10 +278,34 @@ class GameState {
             }
         }
 
+        // Draw path
+        this.ctx.beginPath();
+        this.ctx.moveTo(CONFIG.PATH_POINTS[0].x, CONFIG.PATH_POINTS[0].y);
+        CONFIG.PATH_POINTS.forEach(point => {
+            this.ctx.lineTo(point.x, point.y);
+        });
+        this.ctx.strokeStyle = '#95a5a6';
+        this.ctx.lineWidth = 30;
+        this.ctx.stroke();
+        this.ctx.lineWidth = 1;
+
         // Draw all game entities
         this.towers.forEach(tower => tower.draw(this.ctx));
         this.enemies.forEach(enemy => enemy.draw(this.ctx));
         this.projectiles.forEach(proj => proj.draw(this.ctx));
+
+        // Draw tower preview
+        if (this.selectedTower) {
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = Math.floor((game.mouseX - rect.left) / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE + CONFIG.GRID_SIZE / 2;
+            const mouseY = Math.floor((game.mouseY - rect.top) / CONFIG.GRID_SIZE) * CONFIG.GRID_SIZE + CONFIG.GRID_SIZE / 2;
+            
+            const towerConfig = CONFIG.TOWER_TYPES[this.selectedTower.toUpperCase()];
+            this.ctx.beginPath();
+            this.ctx.arc(mouseX, mouseY, towerConfig.range, 0, Math.PI * 2);
+            this.ctx.strokeStyle = `${towerConfig.color}88`;
+            this.ctx.stroke();
+        }
     }
 
     updateUI() {
