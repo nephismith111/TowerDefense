@@ -126,11 +126,35 @@ body {
     border-radius: 5px;
     color: white;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Special tower styles */
+.tower-slow { border-left: 3px solid #9b59b6; }
+.tower-freeze { border-left: 3px solid #00ffff; }
+.tower-poison { border-left: 3px solid #8e44ad; }
+.tower-laser { border-left: 3px solid #ffffff; }
+.tower-money { border-left: 3px solid #ffd700; }
+.tower-spread { border-left: 3px solid #f1c40f; }
+.tower-splash { border-left: 3px solid #e67e22; }
+
+.tower-special {
+    font-size: 0.7em;
+    color: #f1c40f;
+    margin-top: 2px;
+    text-transform: uppercase;
+}
+
+/* Hover effects */
+.tower-grid button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 .tower-grid button:hover {

@@ -603,9 +603,16 @@ class GameState {
         towerSelection.innerHTML = '';
         enemyLegend.innerHTML = '';
 
-        // Initialize tower selection
-        Object.entries(CONFIG.TOWER_TYPES).forEach(([key, tower]) => {
+        // Initialize tower selection - sort by cost
+        Object.entries(CONFIG.TOWER_TYPES)
+            .sort((a, b) => a[1].cost - b[1].cost)
+            .forEach(([key, tower]) => {
             const button = document.createElement('button');
+            
+            // Add special class based on tower type
+            if (tower.special) {
+                button.classList.add(`tower-${tower.special}`);
+            }
             
             const colorDiv = document.createElement('div');
             colorDiv.className = 'tower-color';
@@ -618,6 +625,14 @@ class GameState {
             const costDiv = document.createElement('div');
             costDiv.className = 'tower-cost';
             costDiv.textContent = `$${tower.cost}`;
+
+            // Add special effect indicator if tower has special ability
+            if (tower.special) {
+                const specialDiv = document.createElement('div');
+                specialDiv.className = 'tower-special';
+                specialDiv.textContent = `⚡ ${tower.special}`;
+                button.appendChild(specialDiv);
+            }
             
             button.appendChild(colorDiv);
             button.appendChild(nameDiv);
