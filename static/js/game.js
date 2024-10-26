@@ -368,6 +368,7 @@ class Tower {
             Logger.debug('Poison Tower applied poison effect');
         } else if (this.special === 'splash') {
             // Splash damage
+            this.target = targets[0]; // Store the target for drawing
             projectiles.push(new Projectile(this.x, this.y, targets[0], this.damage, 'splash'));
             Logger.debug('Splash Tower fired');
         } else if (this.special === 'spread') {
@@ -440,7 +441,7 @@ class Tower {
             ctx.stroke();
             ctx.shadowBlur = 0;
             ctx.lineWidth = 1;
-        } else if (this.special === 'splash' && this.lastShot > Date.now() - 200) {
+        } else if (this.special === 'splash' && this.lastShot > Date.now() - 200 && this.target) {
             // Draw splash area
             ctx.beginPath();
             ctx.arc(this.target.x, this.target.y, 30, 0, Math.PI * 2);
