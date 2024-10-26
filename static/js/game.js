@@ -41,76 +41,72 @@ const CONFIG = {
     ],
 
     TOWER_TYPES: {
+        RAPID: {
+            id: 'rapid',
+            cost: 75,
+            range: 100,
+            damage: 4,
+            fireRate: 250,
+            color: '#2ecc71',
+            name: 'Rapid Fire',
+            description: 'Fast but weak shots'
+        },
         BALANCED: {
             id: 'balanced',
             cost: 100,
-            range: 120,
-            damage: 10,
-            fireRate: 1000,
+            range: 130,
+            damage: 12,
+            fireRate: 800,
             color: '#3498db',
-            name: 'Balanced Tower',
+            name: 'Balanced',
+            description: 'All-round performer',
             style: {
                 border: '2px solid #2980b9',
                 shadow: '0 0 10px rgba(52, 152, 219, 0.5)'
             }
         },
-        RAPID: {
-            id: 'rapid',
-            cost: 50,
-            range: 80,
-            damage: 5,
-            fireRate: 300,
-            color: '#2ecc71',
-            name: 'Rapid Tower'
+        SNIPER: {
+            id: 'sniper',
+            cost: 175,
+            range: 250,
+            damage: 50,
+            fireRate: 2000,
+            color: '#e74c3c',
+            name: 'Sniper',
+            description: 'Long range, high damage'
+        },
+        SPLASH: {
+            id: 'splash',
+            cost: 200,
+            range: 110,
+            damage: 20,
+            fireRate: 1200,
+            color: '#e67e22',
+            name: 'Splash Damage',
+            special: 'splash',
+            description: 'Area damage'
         },
         SLOW: {
             id: 'slow',
             cost: 150,
-            range: 160,
-            damage: 20,
-            fireRate: 2000,
-            color: '#9b59b6',
-            name: 'Slow Tower',
-            special: 'slow'
-        },
-        SNIPER: {
-            id: 'sniper',
-            cost: 150,
-            range: 200,
-            damage: 40,
-            fireRate: 3000,
-            color: '#e74c3c',
-            name: 'Sniper Tower'
-        },
-        SPREADSHOT: {
-            id: 'spreadshot',
-            cost: 100,
-            range: 120,
-            damage: 8,
-            fireRate: 1000,
-            color: '#f1c40f',
-            name: 'Spreadshot Tower',
-            special: 'spread'
-        },
-        SPLASH: {
-            id: 'splash',
-            cost: 150,
-            range: 120,
+            range: 140,
             damage: 15,
-            fireRate: 1500,
-            color: '#e67e22',
-            name: 'Splash Tower',
-            special: 'splash'
+            fireRate: 1000,
+            color: '#9b59b6',
+            name: 'Slowing Tower',
+            special: 'slow',
+            description: 'Slows enemies'
         },
         FREEZE: {
             id: 'freeze',
-            cost: 150,
-            range: 80,
-            damage: 0,
-            fireRate: 2000,
+            cost: 225,
+            range: 100,
+            damage: 5,
+            fireRate: 1500,
             color: '#00ffff',
-            name: 'Freeze Tower',
+            name: 'Freeze Ray',
             special: 'freeze',
+            description: 'Temporarily freezes',
             style: {
                 border: '2px solid #00cccc',
                 shadow: '0 0 15px rgba(0, 255, 255, 0.6)'
@@ -118,23 +114,36 @@ const CONFIG = {
         },
         POISON: {
             id: 'poison',
-            cost: 100,
-            range: 120,
-            damage: 5,
+            cost: 175,
+            range: 130,
+            damage: 8,
             fireRate: 1000,
             color: '#8e44ad',
             name: 'Poison Tower',
-            special: 'poison'
+            special: 'poison',
+            description: 'Damage over time'
+        },
+        SPREADSHOT: {
+            id: 'spreadshot',
+            cost: 250,
+            range: 140,
+            damage: 15,
+            fireRate: 1200,
+            color: '#f1c40f',
+            name: 'Spread Shot',
+            special: 'spread',
+            description: 'Hits multiple targets'
         },
         LASER: {
             id: 'laser',
-            cost: 200,
-            range: 120,
-            damage: 2,
-            fireRate: 0, // Continuous
+            cost: 300,
+            range: 150,
+            damage: 3,
+            fireRate: 0,
             color: '#ffffff',
-            name: 'Laser Tower',
+            name: 'Laser Beam',
             special: 'laser',
+            description: 'Continuous damage',
             style: {
                 border: '2px solid #cccccc',
                 shadow: '0 0 20px rgba(255, 255, 255, 0.8)'
@@ -142,13 +151,14 @@ const CONFIG = {
         },
         MONEY: {
             id: 'money',
-            cost: 150,
+            cost: 200,
             range: 0,
             damage: 0,
             fireRate: 0,
             color: '#ffd700',
-            name: 'Money Tower',
-            special: 'money'
+            name: 'Money Maker',
+            special: 'money',
+            description: 'Generates income'
         }
     },
 
@@ -156,111 +166,121 @@ const CONFIG = {
         STANDARD: {
             id: 'standard',
             speed: 1,
-            health: 30,
-            value: 10,
+            health: 25,
+            value: 8,
             color: '#e74c3c',
             size: 10,
             description: 'Standard Baddie',
+            minWave: 1,
             style: {
                 border: '2px solid #c0392b',
                 shadow: '0 0 8px rgba(231, 76, 60, 0.6)'
             }
         },
-        SLOW_TANK: {
-            id: 'slow_tank',
-            speed: 0.5,
-            health: 100,
-            value: 20,
-            color: '#34495e',
-            size: 15,
-            description: 'Slow Tank'
-        },
         FAST: {
             id: 'fast',
-            speed: 2,
+            speed: 2.5,
             health: 15,
-            value: 15,
+            value: 12,
             color: '#f1c40f',
             size: 8,
-            description: 'Fast Baddie',
+            description: 'Fast Runner',
+            minWave: 2,
             special: 'fast'
         },
-        STUNNER: {
-            id: 'stunner',
-            speed: 1,
-            health: 30,
-            value: 20,
-            color: '#9b59b6',
-            size: 10,
-            description: 'Stunner',
-            special: 'stun'
-        },
-        DESTROYER: {
-            id: 'destroyer',
-            speed: 0.5,
-            health: 300,
-            value: 50,
-            color: '#e74c3c',
-            size: 20,
-            description: 'Destroyer',
-            special: 'destroy',
-            projectileSpeed: 3,
-            baseFireRate: 2000, // Base firing rate in ms
-            style: {
-                border: '3px solid #000000',
-                shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
-            }
-        },
-        SPLITTER: {
-            id: 'splitter',
-            speed: 1,
-            health: 30,
-            value: 15,
-            color: '#2ecc71',
-            size: 10,
-            description: 'Splitter',
-            special: 'split'
+        SLOW_TANK: {
+            id: 'slow_tank',
+            speed: 0.4,
+            health: 150,
+            value: 25,
+            color: '#34495e',
+            size: 15,
+            description: 'Heavy Tank',
+            minWave: 3
         },
         SHIELDED: {
             id: 'shielded',
-            speed: 1,
-            health: 30,
-            shield: 30,
+            speed: 0.8,
+            health: 40,
+            shield: 40,
             value: 20,
             color: '#95a5a6',
             size: 12,
-            description: 'Shielded Baddie',
+            description: 'Shielded Unit',
+            minWave: 4,
             special: 'shield'
+        },
+        REGENERATOR: {
+            id: 'regenerator',
+            speed: 0.9,
+            health: 45,
+            value: 30,
+            color: '#ff69b4',
+            size: 10,
+            description: 'Self-Healer',
+            minWave: 5,
+            special: 'regenerate'
         },
         INVISIBLE: {
             id: 'invisible',
-            speed: 1,
-            health: 20,
-            value: 25,
+            speed: 1.2,
+            health: 30,
+            value: 35,
             color: '#ffffff',
             size: 10,
-            description: 'Invisible Baddie',
+            description: 'Stealth Unit',
+            minWave: 6,
             special: 'invisible'
         },
         HEALER: {
             id: 'healer',
-            speed: 0.5,
-            health: 40,
-            value: 30,
+            speed: 0.6,
+            health: 60,
+            value: 40,
             color: '#00ff00',
             size: 12,
-            description: 'Healer',
+            description: 'Squad Medic',
+            minWave: 7,
             special: 'heal'
         },
-        REGENERATOR: {
-            id: 'regenerator',
-            speed: 1,
-            health: 30,
-            value: 25,
-            color: '#ff69b4',
+        STUNNER: {
+            id: 'stunner',
+            speed: 1.1,
+            health: 50,
+            value: 45,
+            color: '#9b59b6',
             size: 10,
-            description: 'Regenerator',
-            special: 'regenerate'
+            description: 'Tower Disruptor',
+            minWave: 8,
+            special: 'stun'
+        },
+        SPLITTER: {
+            id: 'splitter',
+            speed: 0.8,
+            health: 45,
+            value: 50,
+            color: '#2ecc71',
+            size: 10,
+            description: 'Splitting Unit',
+            minWave: 9,
+            special: 'split'
+        },
+        DESTROYER: {
+            id: 'destroyer',
+            speed: 0.4,
+            health: 400,
+            value: 100,
+            color: '#e74c3c',
+            size: 20,
+            description: 'Tower Destroyer',
+            minWave: 10,
+            special: 'destroy',
+            projectileSpeed: 2.5,
+            baseFireRate: 2500,
+            style: {
+                border: '3px solid #000000',
+                shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
+            }
         }
     }
 };
@@ -850,11 +870,34 @@ class GameState {
     }
 
     spawnEnemy() {
-        // Randomly select an enemy type based on wave
-        const enemyTypes = Object.keys(CONFIG.ENEMY_TYPES);
-        const randomType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
-        this.enemies.push(new Enemy(randomType, CONFIG.PATH_POINTS));
+        // Filter enemy types based on current wave
+        const availableTypes = Object.entries(CONFIG.ENEMY_TYPES)
+            .filter(([_, config]) => config.minWave <= this.wave)
+            .map(([type, _]) => type);
+
+        // Weight the random selection towards appropriate enemies for the current wave
+        const weights = availableTypes.map(type => {
+            const config = CONFIG.ENEMY_TYPES[type];
+            const waveDiff = this.wave - config.minWave;
+            return Math.max(0, 10 - waveDiff); // Higher weight for newer enemies
+        });
+
+        // Weighted random selection
+        const totalWeight = weights.reduce((a, b) => a + b, 0);
+        let random = Math.random() * totalWeight;
+        let selectedType = availableTypes[0];
+
+        for (let i = 0; i < weights.length; i++) {
+            random -= weights[i];
+            if (random <= 0) {
+                selectedType = availableTypes[i];
+                break;
+            }
+        }
+
+        this.enemies.push(new Enemy(selectedType, CONFIG.PATH_POINTS));
         this.enemiesSpawned++;
+        Logger.debug(`Spawned ${selectedType} enemy in wave ${this.wave}`);
     }
 
     isValidTowerPosition(x, y) {
