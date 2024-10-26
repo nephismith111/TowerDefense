@@ -827,19 +827,29 @@ class GameState {
                 const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 + Math.log(this.wave) / 2);
                 
                 if (now - enemy.lastShot >= fireRate) {
+                    // Find the nearest tower to target
+                    let nearestTower = null;
+                    let minDistance = Infinity;
                     this.towers.forEach(tower => {
-                        // Create a projectile targeting the nearest tower
+                        const dist = Math.hypot(tower.x - enemy.x, tower.y - enemy.y);
+                        if (dist < minDistance) {
+                            minDistance = dist;
+                            nearestTower = tower;
+                        }
+                    });
+
+                    if (nearestTower) {
                         const projectile = {
                             x: enemy.x,
                             y: enemy.y,
-                            targetX: tower.x,
-                            targetY: tower.y,
+                            targetX: nearestTower.x,
+                            targetY: nearestTower.y,
                             speed: CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed,
                             color: '#ff0000'
                         };
                         if (!this.destroyerProjectiles) this.destroyerProjectiles = [];
                         this.destroyerProjectiles.push(projectile);
-                    });
+                    }
                     enemy.lastShot = now;
                 }
                 
