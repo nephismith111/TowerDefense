@@ -110,7 +110,11 @@ const CONFIG = {
             fireRate: 2000,
             color: '#00ffff',
             name: 'Freeze Tower',
-            special: 'freeze'
+            special: 'freeze',
+            style: {
+                border: '2px solid #00cccc',
+                shadow: '0 0 15px rgba(0, 255, 255, 0.6)'
+            }
         },
         POISON: {
             id: 'poison',
@@ -130,7 +134,11 @@ const CONFIG = {
             fireRate: 0, // Continuous
             color: '#ffffff',
             name: 'Laser Tower',
-            special: 'laser'
+            special: 'laser',
+            style: {
+                border: '2px solid #cccccc',
+                shadow: '0 0 20px rgba(255, 255, 255, 0.8)'
+            }
         },
         MONEY: {
             id: 'money',
