@@ -61,3 +61,120 @@ body {
     justify-content: space-around;
     font-size: 1.2em;
 }
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.game-layout {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.hud {
+    background-color: #2c3e50;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1.2em;
+}
+
+.side-panel {
+    width: 200px;
+    background-color: #2c3e50;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.side-panel h3 {
+    margin: 0 0 15px 0;
+    text-align: center;
+    color: #ecf0f1;
+}
+
+.tower-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.tower-grid button {
+    background-color: #34495e;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.tower-grid button:hover {
+    background-color: #2c3e50;
+}
+
+.tower-grid button .tower-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+.tower-grid button .tower-name {
+    font-size: 0.8em;
+    text-align: center;
+}
+
+.tower-grid button .tower-cost {
+    font-size: 0.9em;
+    color: #f1c40f;
+}
+
+.legend-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.enemy-type {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #34495e;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.enemy-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.enemy-info {
+    font-size: 0.8em;
+}
+
+#gameCanvas {
+    border: 2px solid #2c3e50;
+    border-radius: 5px;
+}

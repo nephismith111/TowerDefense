@@ -597,13 +597,53 @@ class GameState {
 
     initializeTowerSelection() {
         const towerSelection = document.getElementById('towerSelection');
+        const enemyLegend = document.querySelector('.legend-grid');
+        
+        // Clear existing content
         towerSelection.innerHTML = '';
+        enemyLegend.innerHTML = '';
 
+        // Initialize tower selection
         Object.entries(CONFIG.TOWER_TYPES).forEach(([key, tower]) => {
             const button = document.createElement('button');
-            button.textContent = `${tower.name} ($${tower.cost})`;
+            
+            const colorDiv = document.createElement('div');
+            colorDiv.className = 'tower-color';
+            colorDiv.style.backgroundColor = tower.color;
+            
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'tower-name';
+            nameDiv.textContent = tower.name;
+            
+            const costDiv = document.createElement('div');
+            costDiv.className = 'tower-cost';
+            costDiv.textContent = `$${tower.cost}`;
+            
+            button.appendChild(colorDiv);
+            button.appendChild(nameDiv);
+            button.appendChild(costDiv);
             button.onclick = () => this.selectTower(tower.id);
+            
             towerSelection.appendChild(button);
+        });
+
+        // Initialize enemy legend
+        Object.entries(CONFIG.ENEMY_TYPES).forEach(([key, enemy]) => {
+            const enemyDiv = document.createElement('div');
+            enemyDiv.className = 'enemy-type';
+            
+            const colorDiv = document.createElement('div');
+            colorDiv.className = 'enemy-color';
+            colorDiv.style.backgroundColor = enemy.color;
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'enemy-info';
+            infoDiv.textContent = `${enemy.description}`;
+            
+            enemyDiv.appendChild(colorDiv);
+            enemyDiv.appendChild(infoDiv);
+            
+            enemyLegend.appendChild(enemyDiv);
         });
     }
 

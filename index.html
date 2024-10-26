@@ -15,8 +15,17 @@
                 <span>🌊 Wave: <span id="wave">1</span></span>
             </div>
         </div>
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
-        <div id="towerSelection"></div>
+        <div class="game-layout">
+            <div id="enemyLegend" class="side-panel">
+                <h3>Enemy Types</h3>
+                <div class="legend-grid"></div>
+            </div>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="side-panel">
+                <h3>Available Towers</h3>
+                <div id="towerSelection" class="tower-grid"></div>
+            </div>
+        </div>
     </div>
     <script src="static/js/game.js"></script>
 </body>
