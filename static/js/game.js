@@ -372,12 +372,14 @@ class Tower {
             Logger.debug('Splash Tower fired');
         } else if (this.special === 'spread') {
             // Fire multiple projectiles
+            this.currentTargets = targets;
             targets.forEach(target => {
                 projectiles.push(new Projectile(this.x, this.y, target, this.damage));
             });
             Logger.debug('Spreadshot Tower fired at multiple targets');
         } else if (this.special === 'laser') {
             // Continuous damage
+            this.target = targets[0];
             targets.forEach(target => {
                 target.health -= this.damage;
             });
@@ -420,6 +422,43 @@ class Tower {
             ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
             ctx.strokeStyle = `${this.color}88`;
             ctx.stroke();
+        }
+
+        // Draw special effects
+        if (this.special === 'laser' && this.target) {
+            // Draw laser beam
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(this.target.x, this.target.y);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Add glow effect
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 10;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            ctx.lineWidth = 1;
+        } else if (this.special === 'splash' && this.lastShot > Date.now() - 200) {
+            // Draw splash area
+            ctx.beginPath();
+            ctx.arc(this.target.x, this.target.y, 30, 0, Math.PI * 2);
+            ctx.fillStyle = `${this.color}44`;
+            ctx.fill();
+            ctx.strokeStyle = this.color;
+            ctx.stroke();
+        } else if (this.special === 'spread' && this.lastShot > Date.now() - 200) {
+            // Draw spread lines to all targets
+            ctx.beginPath();
+            this.currentTargets?.forEach(target => {
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(target.x, target.y);
+            });
+            ctx.strokeStyle = `${this.color}88`;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.lineWidth = 1;
         }
     }
 }
