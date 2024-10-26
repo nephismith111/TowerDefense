@@ -185,7 +185,7 @@ const CONFIG = {
             color: '#f1c40f',
             size: 8,
             description: 'Fast Runner',
-            minWave: 2,
+            minWave: 1,
             special: 'fast'
         },
         SLOW_TANK: {
@@ -196,7 +196,7 @@ const CONFIG = {
             color: '#34495e',
             size: 15,
             description: 'Heavy Tank',
-            minWave: 3
+            minWave: 2
         },
         SHIELDED: {
             id: 'shielded',
@@ -207,7 +207,7 @@ const CONFIG = {
             color: '#95a5a6',
             size: 12,
             description: 'Shielded Unit',
-            minWave: 4,
+            minWave: 2,
             special: 'shield'
         },
         REGENERATOR: {
@@ -218,7 +218,7 @@ const CONFIG = {
             color: '#ff69b4',
             size: 10,
             description: 'Self-Healer',
-            minWave: 5,
+            minWave: 3,
             special: 'regenerate'
         },
         INVISIBLE: {
@@ -229,7 +229,7 @@ const CONFIG = {
             color: '#ffffff',
             size: 10,
             description: 'Stealth Unit',
-            minWave: 6,
+            minWave: 3,
             special: 'invisible'
         },
         HEALER: {
@@ -240,7 +240,7 @@ const CONFIG = {
             color: '#00ff00',
             size: 12,
             description: 'Squad Medic',
-            minWave: 7,
+            minWave: 4,
             special: 'heal'
         },
         STUNNER: {
@@ -251,7 +251,7 @@ const CONFIG = {
             color: '#9b59b6',
             size: 10,
             description: 'Tower Disruptor',
-            minWave: 8,
+            minWave: 4,
             special: 'stun'
         },
         SPLITTER: {
@@ -262,7 +262,7 @@ const CONFIG = {
             color: '#2ecc71',
             size: 10,
             description: 'Splitting Unit',
-            minWave: 9,
+            minWave: 5,
             special: 'split'
         },
         DESTROYER: {
@@ -273,7 +273,7 @@ const CONFIG = {
             color: '#e74c3c',
             size: 20,
             description: 'Tower Destroyer',
-            minWave: 10,
+            minWave: 6,
             special: 'destroy',
             projectileSpeed: 2.5,
             baseFireRate: 2500,
