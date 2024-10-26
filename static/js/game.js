@@ -594,6 +594,7 @@ class GameState {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.money = CONFIG.INITIAL_MONEY;
+        this.flashEffects = []; // Track tower destruction animations
         this.lives = CONFIG.INITIAL_LIVES;
         this.wave = 1;
         this.towers = [];
@@ -759,6 +760,14 @@ class GameState {
                     if (dist < 30) {
                         Logger.warn('Destroyer enemy destroyed a tower!');
                         this.displayPoof(tower.x, tower.y);
+                        // Add flash effect when tower is destroyed
+                        this.flashEffects.push({
+                            x: tower.x,
+                            y: tower.y,
+                            startTime: Date.now(),
+                            duration: 500, // Flash duration in ms
+                            radius: 30 // Flash radius
+                        });
                         return false;
                     }
                     return true;
@@ -877,6 +886,23 @@ class GameState {
 
         // Draw Poof effects
         this.drawPoofs();
+        
+        // Draw flash effects
+        this.flashEffects = this.flashEffects.filter(flash => {
+            const elapsed = Date.now() - flash.startTime;
+            if (elapsed > flash.duration) return false;
+            
+            const progress = elapsed / flash.duration;
+            const alpha = 1 - progress;
+            const radius = flash.radius * (1 + progress);
+            
+            this.ctx.beginPath();
+            this.ctx.arc(flash.x, flash.y, radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = `rgba(255, 0, 0, ${alpha * 0.5})`;
+            this.ctx.fill();
+            
+            return true;
+        });
     }
 
     updateUI() {
