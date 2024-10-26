@@ -277,8 +277,8 @@ const CONFIG = {
             special: 'destroy',
             projectileSpeed: 2.5,
             baseFireRate: 2500,
-            maxPerWave: wave => Math.min(Math.floor(wave / 3), 5), // Max destroyers increases with waves, caps at 5
-            spawnProbability: wave => Math.min(0.1 + (wave - 6) * 0.05, 0.8), // 10% base + 5% per wave after 6, caps at 80%
+            maxPerWave: wave => Math.min(Math.floor(wave / 2), 7), // Max destroyers increases faster, caps at 7
+            spawnProbability: wave => Math.min(0.2 + (wave - 6) * 0.1, 0.9), // 20% base + 10% per wave after 6, caps at 90%
             style: {
                 border: '3px solid #000000',
                 shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
@@ -827,7 +827,8 @@ class GameState {
                 
                 const now = Date.now();
                 // Calculate fire rate based on wave number (gets faster as waves progress)
-                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 + Math.log(this.wave) / 2);
+                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 / (1 + Math.log(this.wave) / 2)); // Fires faster in later waves
+                const projectileSpeed = CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed * (1 + Math.log(this.wave) / 3); // Projectiles move faster in later waves
                 
                 if (now - enemy.lastShot >= fireRate) {
                     // Find the nearest tower to target
@@ -847,7 +848,7 @@ class GameState {
                             y: enemy.y,
                             targetX: nearestTower.x,
                             targetY: nearestTower.y,
-                            speed: CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed,
+                            speed: CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed * (1 + Math.log(this.wave) / 3),
                             color: '#ff0000'
                         };
                         if (!this.destroyerProjectiles) this.destroyerProjectiles = [];
