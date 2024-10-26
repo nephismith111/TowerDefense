@@ -203,7 +203,11 @@ const CONFIG = {
             color: '#e74c3c',
             size: 20,
             description: 'Destroyer',
-            special: 'destroy'
+            special: 'destroy',
+            style: {
+                border: '3px solid #000000',
+                shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
+            }
         },
         SPLITTER: {
             id: 'splitter',
@@ -746,6 +750,19 @@ class GameState {
                 Logger.warn(`Enemy reached end! Lives: ${this.lives}`);
                 this.displayPoof(enemy.x, enemy.y);
                 return false;
+            }
+            
+            // Destroyer enemy special ability
+            if (enemy.special === 'destroy') {
+                this.towers = this.towers.filter(tower => {
+                    const dist = Math.hypot(tower.x - enemy.x, tower.y - enemy.y);
+                    if (dist < 30) {
+                        Logger.warn('Destroyer enemy destroyed a tower!');
+                        this.displayPoof(tower.x, tower.y);
+                        return false;
+                    }
+                    return true;
+                });
             }
             if (enemy.health <= 0) {
                 this.money += enemy.value;
