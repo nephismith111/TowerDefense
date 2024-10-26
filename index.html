@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Defense Game</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="hud">
+            <div class="stats">
+                <span>💰 Money: <span id="money">150</span></span>
+                <span>❤️ Lives: <span id="lives">15</span></span>
+                <span>🌊 Wave: <span id="wave">1</span></span>
+            </div>
+        </div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="towerSelection"></div>
+    </div>
+    <script src="static/js/game.js"></script>
+</body>
+</html>
