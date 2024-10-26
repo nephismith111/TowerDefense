@@ -277,6 +277,8 @@ const CONFIG = {
             special: 'destroy',
             projectileSpeed: 2.5,
             baseFireRate: 2500,
+            maxPerWave: wave => Math.min(Math.floor(wave / 3), 5), // Max destroyers increases with waves, caps at 5
+            spawnProbability: wave => Math.min(0.1 + (wave - 6) * 0.05, 0.8), // 10% base + 5% per wave after 6, caps at 80%
             style: {
                 border: '3px solid #000000',
                 shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
@@ -330,11 +332,12 @@ class Tower {
                 return dist <= this.range;
             }).slice(0, 3); // Limit to 3 targets
         } else if (this.special === 'laser') {
-            // Laser Tower targets first enemy in range
-            return enemies.filter(enemy => {
+            // Laser Tower targets only the first enemy in range
+            const target = enemies.find(enemy => {
                 const dist = Math.hypot(enemy.x - this.x, enemy.y - this.y);
                 return dist <= this.range;
             });
+            return target ? [target] : [];
         } else {
             // Standard targeting
             let target = enemies.find(enemy => {
@@ -920,16 +923,31 @@ class GameState {
     }
 
     spawnEnemy() {
+        // Initialize destroyer count for this wave if not exists
+        if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave) {
+            this.destroyerCount = this.destroyerCount || 0;
+        }
+
         // Filter enemy types based on current wave
         const availableTypes = Object.entries(CONFIG.ENEMY_TYPES)
-            .filter(([_, config]) => config.minWave <= this.wave)
+            .filter(([type, config]) => {
+                if (type === 'DESTROYER') {
+                    // Check destroyer-specific conditions
+                    const maxDestroyers = config.maxPerWave(this.wave);
+                    const probability = config.spawnProbability(this.wave);
+                    return config.minWave <= this.wave && 
+                           this.destroyerCount < maxDestroyers && 
+                           Math.random() < probability;
+                }
+                return config.minWave <= this.wave;
+            })
             .map(([type, _]) => type);
 
         // Weight the random selection towards appropriate enemies for the current wave
         const weights = availableTypes.map(type => {
             const config = CONFIG.ENEMY_TYPES[type];
             const waveDiff = this.wave - config.minWave;
-            return Math.max(0, 10 - waveDiff); // Higher weight for newer enemies
+            return Math.max(0, 10 - waveDiff);
         });
 
         // Weighted random selection
@@ -943,6 +961,11 @@ class GameState {
                 selectedType = availableTypes[i];
                 break;
             }
+        }
+
+        // Track destroyer count
+        if (selectedType === 'DESTROYER') {
+            this.destroyerCount++;
         }
 
         this.enemies.push(new Enemy(selectedType, CONFIG.PATH_POINTS));
