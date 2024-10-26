@@ -204,6 +204,8 @@ const CONFIG = {
             size: 20,
             description: 'Destroyer',
             special: 'destroy',
+            projectileSpeed: 3,
+            baseFireRate: 2000, // Base firing rate in ms
             style: {
                 border: '3px solid #000000',
                 shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
@@ -755,23 +757,65 @@ class GameState {
             
             // Destroyer enemy special ability
             if (enemy.special === 'destroy') {
-                this.towers = this.towers.filter(tower => {
-                    const dist = Math.hypot(tower.x - enemy.x, tower.y - enemy.y);
-                    if (dist < 30) {
-                        Logger.warn('Destroyer enemy destroyed a tower!');
-                        this.displayPoof(tower.x, tower.y);
-                        // Add flash effect when tower is destroyed
-                        this.flashEffects.push({
-                            x: tower.x,
-                            y: tower.y,
-                            startTime: Date.now(),
-                            duration: 500, // Flash duration in ms
-                            radius: 30 // Flash radius
-                        });
-                        return false;
-                    }
-                    return true;
-                });
+                // Initialize lastShot if not exists
+                if (typeof enemy.lastShot === 'undefined') {
+                    enemy.lastShot = 0;
+                }
+                
+                const now = Date.now();
+                // Calculate fire rate based on wave number (gets faster as waves progress)
+                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate / Math.sqrt(this.wave);
+                
+                if (now - enemy.lastShot >= fireRate) {
+                    this.towers.forEach(tower => {
+                        // Create a projectile targeting the nearest tower
+                        const projectile = {
+                            x: enemy.x,
+                            y: enemy.y,
+                            targetX: tower.x,
+                            targetY: tower.y,
+                            speed: CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed,
+                            color: '#ff0000'
+                        };
+                        if (!this.destroyerProjectiles) this.destroyerProjectiles = [];
+                        this.destroyerProjectiles.push(projectile);
+                    });
+                    enemy.lastShot = now;
+                }
+                
+                // Update and check destroyer projectiles
+                if (this.destroyerProjectiles) {
+                    this.destroyerProjectiles = this.destroyerProjectiles.filter(proj => {
+                        // Move projectile
+                        const dx = proj.targetX - proj.x;
+                        const dy = proj.targetY - proj.y;
+                        const dist = Math.hypot(dx, dy);
+                        
+                        if (dist < proj.speed) {
+                            // Hit tower
+                            this.towers = this.towers.filter(tower => {
+                                if (tower.x === proj.targetX && tower.y === proj.targetY) {
+                                    Logger.warn('Destroyer projectile destroyed a tower!');
+                                    this.displayPoof(tower.x, tower.y);
+                                    this.flashEffects.push({
+                                        x: tower.x,
+                                        y: tower.y,
+                                        startTime: Date.now(),
+                                        duration: 500,
+                                        radius: 30
+                                    });
+                                    return false;
+                                }
+                                return true;
+                            });
+                            return false;
+                        }
+                        
+                        proj.x += (dx / dist) * proj.speed;
+                        proj.y += (dy / dist) * proj.speed;
+                        return true;
+                    });
+                }
             }
             if (enemy.health <= 0) {
                 this.money += enemy.value;
@@ -864,6 +908,22 @@ class GameState {
         this.towers.forEach(tower => tower.draw(this.ctx));
         this.enemies.forEach(enemy => enemy.draw(this.ctx));
         this.projectiles.forEach(proj => proj.draw(this.ctx));
+        
+        // Draw destroyer projectiles
+        if (this.destroyerProjectiles) {
+            this.destroyerProjectiles.forEach(proj => {
+                this.ctx.beginPath();
+                this.ctx.arc(proj.x, proj.y, 5, 0, Math.PI * 2);
+                this.ctx.fillStyle = proj.color;
+                this.ctx.fill();
+                
+                // Add a glowing effect
+                this.ctx.shadowColor = '#ff0000';
+                this.ctx.shadowBlur = 10;
+                this.ctx.fill();
+                this.ctx.shadowBlur = 0;
+            });
+        }
 
         // Draw tower preview
         if (this.selectedTower) {
