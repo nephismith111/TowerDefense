@@ -74,7 +74,7 @@ const CONFIG = {
             color: '#e74c3c',
             name: 'Sniper',
             description: 'Long range, high damage',
-            maxCount: 2  // Limit to 2 sniper towers
+            maxCount: 10  // Limit to 2 sniper towers
         },
         SPLASH: {
             id: 'splash',
@@ -204,12 +204,12 @@ const CONFIG = {
             id: 'shielded',
             speed: 0.8,
             health: 40,
-            shield: 40,
+            shield: 200,
             value: 20,
             color: '#95a5a6',
             size: 12,
             description: 'Shielded Unit',
-            minWave: 2,
+            minWave: 4,
             special: 'shield'
         },
         REGENERATOR: {
@@ -275,11 +275,11 @@ const CONFIG = {
             color: '#e74c3c',
             size: 20,
             description: 'Tower Destroyer',
-            minWave: 6,
+            minWave: 4,
             special: 'destroy',
             projectileSpeed: 2.5,
             baseFireRate: 2500,
-            maxPerWave: wave => Math.min(Math.floor(wave / 2), 7), // Max destroyers increases faster, caps at 7
+            maxPerWave: wave => Math.min(Math.floor(wave / 2), 30), // Max destroyers increases faster, caps at 30
             spawnProbability: wave => Math.min(0.2 + (wave - 6) * 0.1, 0.9), // 20% base + 10% per wave after 6, caps at 90%
             style: {
                 border: '3px solid #000000',
