@@ -280,15 +280,17 @@ const CONFIG = {
             speed: 0.4,
             health: 400,
             value: 100,
-            color: '#800000',  // Darker red to distinguish from bomber
+            color: '#4a0404',  // Very dark red
             size: 20,
             description: 'Tower Destroyer',
             minWave: 4,
             special: 'destroy',
             style: {
                 border: '3px solid #ff0000',  // Bright red border
-                shadow: '0 0 15px rgba(255, 0, 0, 0.6)'
+                shadow: '0 0 15px rgba(255, 0, 0, 0.8)'
             },
+            projectileSpeed: 2.5,
+            fireRate: 2500,
         },
         BOMBER: {
             id: 'bomber',
@@ -690,6 +692,7 @@ class GameState {
         this.ctx = this.canvas.getContext('2d');
         this.money = CONFIG.INITIAL_MONEY;
         this.flashEffects = []; // Track tower destruction animations
+        this.destroyerProjectiles = []; // Initialize destroyer projectiles array
         
         // Initialize powerup states
         this.powerups = {
@@ -1081,12 +1084,10 @@ class GameState {
     spawnEnemy() {
         // Guaranteed destroyer spawns at start of wave
         if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave && 
-            this.enemiesSpawned === 0 &&  // Only spawn at start of wave
-            !this.destroyersSpawnedThisWave) {
+            this.enemiesSpawned === 0) {  // Only spawn at start of wave
             this.enemies.push(new Enemy('DESTROYER', CONFIG.PATH_POINTS));
             this.enemiesSpawned++;
-            this.destroyersSpawnedThisWave = true;
-            Logger.debug(`Spawned guaranteed Destroyer in wave ${this.wave}`);
+            Logger.debug(`Spawned Destroyer in wave ${this.wave}`);
             return;
         }
 
