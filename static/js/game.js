@@ -118,16 +118,16 @@ const CONFIG = {
                 shadow: '0 0 15px rgba(0, 255, 255, 0.6)'
             }
         },
-        POISON: {
-            id: 'poison',
+        TAX: {
+            id: 'tax',
             cost: 175,
             range: 130,
             damage: 8,
             fireRate: 1000,
             color: '#8e44ad',
-            name: 'Poison Tower',
-            special: 'poison',
-            description: 'Damage over time',
+            name: 'Tax Tower',
+            special: 'tax',
+            description: 'Drains over time',
             maxCount: 4
         },
         SPREADSHOT: {
@@ -391,8 +391,8 @@ class Tower {
         } else if (this.special === 'poison') {
             // Apply poison effect
             targets.forEach(target => {
-                target.poisonDamage = 2; // Damage over time
-                target.poisonDuration = 5000; // Lasts for 5 seconds
+                target.taxDamage = 2; // Damage over time
+                target.taxDuration = 5000; // Lasts for 5 seconds
             });
             Logger.debug('Poison Tower applied poison effect');
         } else if (this.special === 'splash') {
@@ -534,11 +534,11 @@ class Enemy {
         }
 
         // Apply poison effect
-        if (this.poisonDuration > 0) {
-            this.poisonDuration -= game.deltaTime;
-            if (!this.lastPoisonTick || Date.now() - this.lastPoisonTick >= 1000) {
-                this.health -= this.poisonDamage;
-                this.lastPoisonTick = Date.now();
+        if (this.taxDuration > 0) {
+            this.taxDuration -= game.deltaTime;
+            if (!this.lastTaxTick || Date.now() - this.lastTaxTick >= 1000) {
+                this.health -= this.taxDamage;
+                this.lastTaxTick = Date.now();
             }
         }
 

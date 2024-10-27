@@ -157,7 +157,7 @@ body {
 /* Special tower styles */
 .tower-slow { border-left: 3px solid #9b59b6; }
 .tower-freeze { border-left: 3px solid #00ffff; }
-.tower-poison { border-left: 3px solid #8e44ad; }
+.tower-tax { border-left: 3px solid #8e44ad; }
 .tower-laser { border-left: 3px solid #ffffff; }
 .tower-money { border-left: 3px solid #ffd700; }
 .tower-spread { border-left: 3px solid #f1c40f; }
