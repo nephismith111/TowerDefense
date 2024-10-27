@@ -61,6 +61,25 @@ body {
     justify-content: space-around;
     font-size: 1.2em;
 }
+
+.stats span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#gameSpeed {
+    background: #34495e;
+    color: white;
+    border: 1px solid #95a5a6;
+    border-radius: 3px;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+
+#gameSpeed:hover {
+    background: #2c3e50;
+}
 body {
     margin: 0;
     padding: 20px;
