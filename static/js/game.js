@@ -407,7 +407,7 @@ class Tower {
         // Draw main tower body
         ctx.beginPath();
         ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = TEXTURES.TOWER_PATTERNS[this.id.toUpperCase()];
         ctx.fill();
 
         // Draw border if specified
@@ -565,7 +565,7 @@ class Enemy {
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = TEXTURES.ENEMY_PATTERNS[this.id.toUpperCase()];
         ctx.fill();
 
         // Draw border if specified
@@ -1042,13 +1042,18 @@ class GameState {
             }
         }
 
-        // Draw path
+        // Draw background texture
+        this.ctx.fillStyle = TEXTURES.BACKGROUND_PATTERNS[Math.floor(this.wave / 5) % TEXTURES.BACKGROUND_PATTERNS.length];
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw path with texture
         this.ctx.beginPath();
         this.ctx.moveTo(CONFIG.PATH_POINTS[0].x, CONFIG.PATH_POINTS[0].y);
         CONFIG.PATH_POINTS.forEach(point => {
             this.ctx.lineTo(point.x, point.y);
         });
-        this.ctx.strokeStyle = '#95a5a6';
+        const pathPattern = TEXTURES.PATH_PATTERNS[Math.floor(this.wave / 3) % TEXTURES.PATH_PATTERNS.length];
+        this.ctx.strokeStyle = pathPattern;
         this.ctx.lineWidth = 30;
         this.ctx.stroke();
         this.ctx.lineWidth = 1;
