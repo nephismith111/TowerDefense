@@ -168,7 +168,7 @@ const CONFIG = {
             name: 'Money Maker',
             special: 'money',
             description: 'Generates income',
-            maxCount: 5
+            maxCount: 12
         }
     },
 
