@@ -280,11 +280,15 @@ const CONFIG = {
             speed: 0.4,
             health: 400,
             value: 100,
-            color: '#e74c3c',
+            color: '#800000',  // Darker red to distinguish from bomber
             size: 20,
             description: 'Tower Destroyer',
             minWave: 4,
             special: 'destroy',
+            style: {
+                border: '3px solid #ff0000',  // Bright red border
+                shadow: '0 0 15px rgba(255, 0, 0, 0.6)'
+            },
         },
         BOMBER: {
             id: 'bomber',
@@ -941,7 +945,7 @@ class GameState {
                 
                 const now = Date.now();
                 // Calculate fire rate based on wave number (gets faster as waves progress)
-                const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 / (1 + Math.log(this.wave) / 2)); // Fires faster in later waves
+                const fireRate = 2500 * (1 / (1 + Math.log(this.wave) / 2)); // Base fire rate of 2.5 seconds, gets faster in later waves
                 const projectileSpeed = CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed * (1 + Math.log(this.wave) / 3); // Projectiles move faster in later waves
                 
                 if (now - enemy.lastShot >= fireRate / this.speedMultiplier) {
@@ -1077,7 +1081,7 @@ class GameState {
     spawnEnemy() {
         // Guaranteed destroyer spawns at start of wave
         if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave && 
-            this.enemiesSpawned < (this.wave - CONFIG.ENEMY_TYPES.DESTROYER.minWave + 1) && 
+            this.enemiesSpawned === 0 &&  // Only spawn at start of wave
             !this.destroyersSpawnedThisWave) {
             this.enemies.push(new Enemy('DESTROYER', CONFIG.PATH_POINTS));
             this.enemiesSpawned++;
