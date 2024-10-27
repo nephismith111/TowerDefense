@@ -565,7 +565,7 @@ class Enemy {
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = TEXTURES.ENEMY_PATTERNS[this.id.toUpperCase()];
+        ctx.fillStyle = this.color;
         ctx.fill();
 
         // Draw border if specified
@@ -1042,8 +1042,8 @@ class GameState {
             }
         }
 
-        // Draw muted background
-        this.ctx.fillStyle = '#1e2326';
+        // Draw lighter background
+        this.ctx.fillStyle = '#2f3542';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw path with alternating hash patterns
@@ -1052,8 +1052,7 @@ class GameState {
         CONFIG.PATH_POINTS.forEach(point => {
             this.ctx.lineTo(point.x, point.y);
         });
-        const pathPattern = TEXTURES.PATH_PATTERNS[0];
-        this.ctx.strokeStyle = pathPattern;
+        this.ctx.strokeStyle = '#576574';
         this.ctx.lineWidth = 30;
         this.ctx.stroke();
         this.ctx.lineWidth = 1;
