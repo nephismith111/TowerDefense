@@ -520,7 +520,7 @@ class Enemy {
     update() {
         // Apply slow effect
         if (this.slowDuration > 0) {
-            this.slowDuration -= game.deltaTime;
+            this.slowDuration -= game.deltaTime * game.speedMultiplier;
             this.currentSpeed = this.speed * this.slowEffect;
         } else {
             this.currentSpeed = this.speed;
@@ -529,13 +529,13 @@ class Enemy {
 
         // Apply freeze effect
         if (this.freezeDuration > 0) {
-            this.freezeDuration -= game.deltaTime;
+            this.freezeDuration -= game.deltaTime * game.speedMultiplier;
             return false; // Enemy is frozen, skip movement
         }
 
         // Apply poison effect
         if (this.taxDuration > 0) {
-            this.taxDuration -= game.deltaTime;
+            this.taxDuration -= game.deltaTime * game.speedMultiplier;
             if (!this.lastTaxTick || Date.now() - this.lastTaxTick >= 1000) {
                 this.health -= this.taxDamage;
                 this.lastTaxTick = Date.now();
@@ -912,7 +912,7 @@ class GameState {
         if (this.gameOver) return;
 
         const now = Date.now();
-        this.deltaTime = (now - this.lastUpdateTime) * this.speedMultiplier;
+        this.deltaTime = now - this.lastUpdateTime;
         this.lastUpdateTime = now;
 
         // Spawn enemies
