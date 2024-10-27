@@ -1042,8 +1042,8 @@ class GameState {
             }
         }
 
-        // Draw background texture - static pattern
-        this.ctx.fillStyle = TEXTURES.BACKGROUND_PATTERNS[0];
+        // Draw muted background
+        this.ctx.fillStyle = '#1e2326';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw path with alternating hash patterns
