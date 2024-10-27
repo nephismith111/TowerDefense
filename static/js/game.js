@@ -1095,9 +1095,9 @@ class GameState {
             return;
         }
 
-        // Filter enemy types based on current wave
+        // Filter out DESTROYER from random spawning since it's handled separately
         const availableTypes = Object.entries(CONFIG.ENEMY_TYPES)
-            .filter(([type, config]) => config.minWave <= this.wave)
+            .filter(([type, config]) => config.minWave <= this.wave && type !== 'DESTROYER')
             .map(([type, _]) => type);
 
         // Weight the random selection towards appropriate enemies for the current wave
@@ -1118,11 +1118,6 @@ class GameState {
                 selectedType = availableTypes[i];
                 break;
             }
-        }
-
-        // Track destroyer count
-        if (selectedType === 'DESTROYER') {
-            this.destroyerCount++;
         }
 
         this.enemies.push(new Enemy(selectedType, CONFIG.PATH_POINTS));
