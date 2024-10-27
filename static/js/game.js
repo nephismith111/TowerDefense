@@ -49,7 +49,8 @@ const CONFIG = {
             fireRate: 250,
             color: '#2ecc71',
             name: 'Rapid Fire',
-            description: 'Fast but weak shots'
+            description: 'Fast but weak shots',
+            maxCount: 8
         },
         BALANCED: {
             id: 'balanced',
@@ -60,6 +61,7 @@ const CONFIG = {
             color: '#3498db',
             name: 'Balanced',
             description: 'All-round performer',
+            maxCount: 6,
             style: {
                 border: '2px solid #2980b9',
                 shadow: '0 0 10px rgba(52, 152, 219, 0.5)'
@@ -85,7 +87,8 @@ const CONFIG = {
             color: '#e67e22',
             name: 'Splash Damage',
             special: 'splash',
-            description: 'Area damage'
+            description: 'Area damage',
+            maxCount: 4
         },
         SLOW: {
             id: 'slow',
@@ -96,7 +99,8 @@ const CONFIG = {
             color: '#9b59b6',
             name: 'Slowing Tower',
             special: 'slow',
-            description: 'Slows enemies'
+            description: 'Slows enemies',
+            maxCount: 4
         },
         FREEZE: {
             id: 'freeze',
@@ -108,6 +112,7 @@ const CONFIG = {
             name: 'Freeze Ray',
             special: 'freeze',
             description: 'Temporarily freezes',
+            maxCount: 3,
             style: {
                 border: '2px solid #00cccc',
                 shadow: '0 0 15px rgba(0, 255, 255, 0.6)'
@@ -122,7 +127,8 @@ const CONFIG = {
             color: '#8e44ad',
             name: 'Poison Tower',
             special: 'poison',
-            description: 'Damage over time'
+            description: 'Damage over time',
+            maxCount: 4
         },
         SPREADSHOT: {
             id: 'spreadshot',
@@ -133,7 +139,8 @@ const CONFIG = {
             color: '#f1c40f',
             name: 'Spread Shot',
             special: 'spread',
-            description: 'Hits multiple targets'
+            description: 'Hits multiple targets',
+            maxCount: 3
         },
         LASER: {
             id: 'laser',
@@ -160,7 +167,8 @@ const CONFIG = {
             color: '#ffd700',
             name: 'Money Maker',
             special: 'money',
-            description: 'Generates income'
+            description: 'Generates income',
+            maxCount: 5
         }
     },
 
@@ -741,6 +749,11 @@ class GameState {
         const towerSelection = document.getElementById('towerSelection');
         const enemyLegend = document.querySelector('.legend-grid');
         
+        // Initialize tower counts
+        Object.keys(CONFIG.TOWER_TYPES).forEach(type => {
+            this.towerCounts[type.toLowerCase()] = 0;
+        });
+        
         // Clear existing content
         towerSelection.innerHTML = '';
         enemyLegend.innerHTML = '';
@@ -1122,6 +1135,16 @@ class GameState {
         document.getElementById('money').textContent = Math.floor(this.money);
         document.getElementById('lives').textContent = this.lives;
         document.getElementById('wave').textContent = this.wave;
+        
+        // Update tower counts
+        Object.keys(CONFIG.TOWER_TYPES).forEach(type => {
+            const countElement = document.querySelector(`#towerSelection button:nth-child(${Object.keys(CONFIG.TOWER_TYPES).indexOf(type) + 1}) .tower-count`);
+            if (countElement) {
+                const towerType = type.toLowerCase();
+                const maxCount = CONFIG.TOWER_TYPES[type].maxCount;
+                countElement.textContent = `${this.towerCounts[towerType] || 0}/${maxCount}`;
+            }
+        });
     }
 
     displayPoof(x, y) {
