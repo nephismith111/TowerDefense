@@ -404,10 +404,10 @@ class Tower {
             ctx.shadowBlur = parseInt(this.style.shadow.match(/\d+/)[0]);
         }
 
-        // Draw main tower body
+        // Draw main tower body with original color
         ctx.beginPath();
         ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
-        ctx.fillStyle = TEXTURES.TOWER_PATTERNS[this.id.toUpperCase()];
+        ctx.fillStyle = this.color;
         ctx.fill();
 
         // Draw border if specified
