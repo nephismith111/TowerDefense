@@ -662,6 +662,7 @@ class GameState {
         this.ctx = this.canvas.getContext('2d');
         this.money = CONFIG.INITIAL_MONEY;
         this.flashEffects = []; // Track tower destruction animations
+        this.speedMultiplier = 1;
         this.towerCounts = {}; // Track number of each tower type
         this.lives = CONFIG.INITIAL_LIVES;
         this.wave = 1;
@@ -682,6 +683,14 @@ class GameState {
         this.canSeeInvisible = false; // Assume certain towers can set this to true
 
         this.initializeTowerSelection();
+        
+        // Initialize speed control
+        const speedControl = document.getElementById('gameSpeed');
+        speedControl.addEventListener('change', (e) => {
+            this.speedMultiplier = parseFloat(e.target.value);
+            Logger.info(`Game speed set to ${this.speedMultiplier}x`);
+        });
+        
         Logger.info('Game state initialized');
 
         this.canvas.addEventListener('mousemove', (e) => {
@@ -817,7 +826,7 @@ class GameState {
         if (this.gameOver) return;
 
         const now = Date.now();
-        this.deltaTime = now - this.lastUpdateTime;
+        this.deltaTime = (now - this.lastUpdateTime) * this.speedMultiplier;
         this.lastUpdateTime = now;
 
         // Spawn enemies
