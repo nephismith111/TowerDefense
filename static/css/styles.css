@@ -178,6 +178,17 @@ body {
     color: #f1c40f;
 }
 
+.tower-count {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 0.8em;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
 .legend-grid {
     display: grid;
     grid-template-columns: 1fr;
