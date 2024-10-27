@@ -303,8 +303,8 @@ const CONFIG = {
             },
             projectileSpeed: 2.5,
             baseFireRate: 2500,
-            maxPerWave: wave => Math.min(Math.floor(wave / 2), 30), // Max destroyers increases faster, caps at 30
-            spawnProbability: wave => Math.min(0.2 + (wave - 6) * 0.1, 0.9), // 20% base + 10% per wave after 6, caps at 90%
+            maxPerWave: 30, // Maximum destroyers per wave
+            spawnProbability: 0.2, // 20% chance to spawn
             style: {
                 border: '3px solid #000000',
                 shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
@@ -1083,8 +1083,8 @@ class GameState {
             .filter(([type, config]) => {
                 if (type === 'DESTROYER') {
                     // Check destroyer-specific conditions
-                    const maxDestroyers = config.maxPerWave(this.wave);
-                    const probability = config.spawnProbability(this.wave);
+                    const maxDestroyers = config.maxPerWave;
+                    const probability = Math.min(config.spawnProbability + (this.wave - config.minWave) * 0.1, 0.9);
                     return config.minWave <= this.wave && 
                            this.destroyerCount < maxDestroyers && 
                            Math.random() < probability;
