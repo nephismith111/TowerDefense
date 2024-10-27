@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0cbf216-4e15-475a-8934-e9ac4beac0fe" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/TowerDefense.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/feedback.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/program_spec.txt" afterDir="false" />
+    <list default="true" id="a0cbf216-4e15-475a-8934-e9ac4beac0fe" name="Changes" comment="Current state, it seems to work and looks more like a game">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,11 +53,35 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1729981635160</updated>
-      <workItem from="1729981636158" duration="2243000" />
+      <workItem from="1729981636158" duration="8930000" />
     </task>
+    <task id="LOCAL-00001" summary="Current state, it seems to work and looks more like a game">
+      <option name="closed" value="true" />
+      <created>1729983971126</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729983971126</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Current state, it seems to work and looks more like a game" />
+    <option name="LAST_COMMIT_MESSAGE" value="Current state, it seems to work and looks more like a game" />
   </component>
 </project>
