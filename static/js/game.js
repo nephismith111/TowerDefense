@@ -916,7 +916,7 @@ class GameState {
         this.lastUpdateTime = now;
 
         // Spawn enemies
-        if (this.enemiesSpawned < this.maxEnemiesPerWave && now - this.lastSpawnTime >= this.spawnInterval) {
+        if (this.enemiesSpawned < this.maxEnemiesPerWave && now - this.lastSpawnTime >= this.spawnInterval / this.speedMultiplier) {
             this.spawnEnemy();
             this.lastSpawnTime = now;
         }
@@ -943,7 +943,7 @@ class GameState {
                 const fireRate = CONFIG.ENEMY_TYPES.DESTROYER.baseFireRate * (1 / (1 + Math.log(this.wave) / 2)); // Fires faster in later waves
                 const projectileSpeed = CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed * (1 + Math.log(this.wave) / 3); // Projectiles move faster in later waves
                 
-                if (now - enemy.lastShot >= fireRate) {
+                if (now - enemy.lastShot >= fireRate / this.speedMultiplier) {
                     // Find the nearest tower to target
                     let nearestTower = null;
                     let minDistance = Infinity;
