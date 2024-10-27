@@ -285,6 +285,22 @@ const CONFIG = {
             description: 'Tower Destroyer',
             minWave: 4,
             special: 'destroy',
+        },
+        BOMBER: {
+            id: 'bomber',
+            speed: 0.3,
+            health: 800,
+            value: 200,
+            color: '#ff6b6b',
+            size: 25,
+            description: 'Explosive Unit',
+            minWave: 5,
+            special: 'explode',
+            explosionRadius: 200, // 5x5 tower area
+            style: {
+                border: '3px solid #ffd93d',
+                shadow: '0 0 15px rgba(255, 217, 61, 0.6)'
+            },
             projectileSpeed: 2.5,
             baseFireRate: 2500,
             maxPerWave: wave => Math.min(Math.floor(wave / 2), 30), // Max destroyers increases faster, caps at 30
@@ -938,7 +954,38 @@ class GameState {
             }
             if (enemy.health <= 0) {
                 this.money += enemy.value;
-                this.displayPoof(enemy.x, enemy.y);
+                
+                // Handle bomber explosion
+                if (enemy.special === 'explode') {
+                    // Create explosion effect
+                    this.flashEffects.push({
+                        x: enemy.x,
+                        y: enemy.y,
+                        startTime: Date.now(),
+                        duration: 1000,
+                        radius: enemy.explosionRadius,
+                        color: '#ff6b6b'
+                    });
+                    
+                    // Remove towers within explosion radius
+                    this.towers = this.towers.filter(tower => {
+                        const dist = Math.hypot(tower.x - enemy.x, tower.y - enemy.y);
+                        if (dist <= enemy.explosionRadius) {
+                            // Decrease tower count when destroyed
+                            const towerType = tower.id.toLowerCase();
+                            if (this.towerCounts[towerType] > 0) {
+                                this.towerCounts[towerType]--;
+                            }
+                            return false;
+                        }
+                        return true;
+                    });
+                    
+                    // Display "POP!" instead of "Poof!"
+                    this.displayCustomPoof(enemy.x, enemy.y, "POP!");
+                } else {
+                    this.displayPoof(enemy.x, enemy.y);
+                }
                 return false;
             }
             return true;
@@ -1124,7 +1171,7 @@ class GameState {
             
             this.ctx.beginPath();
             this.ctx.arc(flash.x, flash.y, radius, 0, Math.PI * 2);
-            this.ctx.fillStyle = `rgba(255, 0, 0, ${alpha * 0.5})`;
+            this.ctx.fillStyle = `rgba(${flash.color || '255, 0, 0'}, ${alpha * 0.5})`;
             this.ctx.fill();
             
             return true;
@@ -1148,8 +1195,12 @@ class GameState {
     }
 
     displayPoof(x, y) {
+        this.displayCustomPoof(x, y, "Poof!");
+    }
+
+    displayCustomPoof(x, y, text) {
         this.poofs = this.poofs || [];
-        this.poofs.push({ x, y, time: Date.now() });
+        this.poofs.push({ x, y, time: Date.now(), text });
     }
 
     drawPoofs() {
@@ -1161,7 +1212,8 @@ class GameState {
 
             this.ctx.fillStyle = `rgba(255, 255, 255, ${1 - elapsed / 1000})`;
             this.ctx.font = '20px Arial';
-            this.ctx.fillText('Poof!', poof.x - 20, poof.y - elapsed / 10);
+            const text = poof.text || 'Poof!';
+            this.ctx.fillText(text, poof.x - 20, poof.y - elapsed / 10);
             return true;
         });
     }
