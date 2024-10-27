@@ -1082,12 +1082,16 @@ class GameState {
     }
 
     spawnEnemy() {
-        // Guaranteed destroyer spawns at start of wave
+        // Spawn destroyers at start of wave
         if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave && 
-            this.enemiesSpawned === 0) {  // Only spawn at start of wave
-            this.enemies.push(new Enemy('DESTROYER', CONFIG.PATH_POINTS));
-            this.enemiesSpawned++;
-            Logger.debug(`Spawned Destroyer in wave ${this.wave}`);
+            !this.destroyersSpawnedThisWave) {  // Only spawn destroyers once per wave
+            const destroyersToSpawn = this.wave - CONFIG.ENEMY_TYPES.DESTROYER.minWave + 1;
+            for (let i = 0; i < destroyersToSpawn; i++) {
+                this.enemies.push(new Enemy('DESTROYER', CONFIG.PATH_POINTS));
+                this.enemiesSpawned++;
+            }
+            this.destroyersSpawnedThisWave = true;
+            Logger.debug(`Spawned ${destroyersToSpawn} Destroyers in wave ${this.wave}`);
             return;
         }
 
