@@ -290,7 +290,7 @@ const CONFIG = {
                 shadow: '0 0 15px rgba(255, 0, 0, 0.8)'
             },
             projectileSpeed: 2.5,
-            fireRate: 2500,
+            fireRate: 5000, // Fire every 5 seconds
         },
         BOMBER: {
             id: 'bomber',
@@ -948,7 +948,7 @@ class GameState {
                 
                 const now = Date.now();
                 // Calculate fire rate based on wave number (gets faster as waves progress)
-                const fireRate = 2500 * (1 / (1 + Math.log(this.wave) / 2)); // Base fire rate of 2.5 seconds, gets faster in later waves
+                const fireRate = 5000 * (1 / (1 + Math.log(this.wave) / 4)); // Base fire rate of 5 seconds, scales more slowly with waves
                 const projectileSpeed = CONFIG.ENEMY_TYPES.DESTROYER.projectileSpeed * (1 + Math.log(this.wave) / 3); // Projectiles move faster in later waves
                 
                 if (now - enemy.lastShot >= fireRate / this.speedMultiplier) {
