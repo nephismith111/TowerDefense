@@ -69,7 +69,7 @@ const CONFIG = {
             id: 'sniper',
             cost: 175,
             range: 250,
-            damage: 75,  // Increased damage
+            damage: 100,  // Increased damage
             fireRate: 2000,
             color: '#e74c3c',
             name: 'Sniper',
