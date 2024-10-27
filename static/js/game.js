@@ -1065,6 +1065,7 @@ class GameState {
         if (this.enemiesSpawned >= this.maxEnemiesPerWave && this.enemies.length === 0) {
             this.wave++;
             this.enemiesSpawned = 0;
+            this.destroyersSpawnedThisWave = false;
             this.maxEnemiesPerWave = Math.ceil(this.maxEnemiesPerWave * 1.2); // Increase enemies per wave
             Logger.info(`Wave ${this.wave} starting`);
         }
@@ -1073,24 +1074,20 @@ class GameState {
     }
 
     spawnEnemy() {
-        // Initialize destroyer count for this wave if not exists
-        if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave) {
-            this.destroyerCount = this.destroyerCount || 0;
+        // Guaranteed destroyer spawns at start of wave
+        if (this.wave >= CONFIG.ENEMY_TYPES.DESTROYER.minWave && 
+            this.enemiesSpawned < (this.wave - CONFIG.ENEMY_TYPES.DESTROYER.minWave + 1) && 
+            !this.destroyersSpawnedThisWave) {
+            this.enemies.push(new Enemy('DESTROYER', CONFIG.PATH_POINTS));
+            this.enemiesSpawned++;
+            this.destroyersSpawnedThisWave = true;
+            Logger.debug(`Spawned guaranteed Destroyer in wave ${this.wave}`);
+            return;
         }
 
         // Filter enemy types based on current wave
         const availableTypes = Object.entries(CONFIG.ENEMY_TYPES)
-            .filter(([type, config]) => {
-                if (type === 'DESTROYER') {
-                    // Check destroyer-specific conditions
-                    const maxDestroyers = config.maxPerWave;
-                    const probability = Math.min(config.spawnProbability + (this.wave - config.minWave) * 0.15, 0.95);
-                    return config.minWave <= this.wave && 
-                           this.destroyerCount < maxDestroyers && 
-                           Math.random() < probability;
-                }
-                return config.minWave <= this.wave;
-            })
+            .filter(([type, config]) => config.minWave <= this.wave)
             .map(([type, _]) => type);
 
         // Weight the random selection towards appropriate enemies for the current wave
