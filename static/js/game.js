@@ -214,7 +214,7 @@ const CONFIG = {
             health: 40,
             shield: 200,
             value: 20,
-            color: '#95a5a6',
+            color: '#368588',
             size: 12,
             description: 'Shielded Unit',
             minWave: 4,
