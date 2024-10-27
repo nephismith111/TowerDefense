@@ -296,7 +296,7 @@ const CONFIG = {
             description: 'Explosive Unit',
             minWave: 5,
             special: 'explode',
-            explosionRadius: 200, // 5x5 tower area
+            explosionRadius: 150, // Reduced explosion radius
             style: {
                 border: '3px solid #ffd93d',
                 shadow: '0 0 15px rgba(255, 217, 61, 0.6)'
@@ -304,7 +304,7 @@ const CONFIG = {
             projectileSpeed: 2.5,
             baseFireRate: 2500,
             maxPerWave: 30, // Maximum destroyers per wave
-            spawnProbability: 0.2, // 20% chance to spawn
+            spawnProbability: 0.4, // 40% base chance to spawn
             style: {
                 border: '3px solid #000000',
                 shadow: '0 0 15px rgba(231, 76, 60, 0.6)'
@@ -1084,7 +1084,7 @@ class GameState {
                 if (type === 'DESTROYER') {
                     // Check destroyer-specific conditions
                     const maxDestroyers = config.maxPerWave;
-                    const probability = Math.min(config.spawnProbability + (this.wave - config.minWave) * 0.1, 0.9);
+                    const probability = Math.min(config.spawnProbability + (this.wave - config.minWave) * 0.15, 0.95);
                     return config.minWave <= this.wave && 
                            this.destroyerCount < maxDestroyers && 
                            Math.random() < probability;
