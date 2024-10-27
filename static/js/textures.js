@@ -1,15 +1,14 @@
 // Texture patterns for game elements
 const TEXTURES = {
-    // Path textures
+    // Path textures - simple hash patterns
     PATH_PATTERNS: [
-        'repeating-linear-gradient(45deg, #95a5a6 0%, #95a5a6 10%, #7f8c8d 10%, #7f8c8d 20%)',
-        'repeating-linear-gradient(-45deg, #95a5a6 0%, #95a5a6 5%, #7f8c8d 5%, #7f8c8d 10%)',
+        'repeating-linear-gradient(45deg, #95a5a6 0px, #95a5a6 2px, #7f8c8d 2px, #7f8c8d 4px)',
+        'repeating-linear-gradient(-45deg, #95a5a6 0px, #95a5a6 2px, #7f8c8d 2px, #7f8c8d 4px)',
     ],
     
-    // Background patterns
+    // Background patterns - subtle dot pattern
     BACKGROUND_PATTERNS: [
-        'radial-gradient(circle at 30px 30px, #2c3e50 2px, transparent 2px)',
-        'repeating-linear-gradient(0deg, transparent, transparent 20px, #2c3e50 20px, #2c3e50 21px)',
+        'radial-gradient(circle at 20px 20px, #2c3e50 1px, transparent 1px)',
     ],
     
     // Tower patterns

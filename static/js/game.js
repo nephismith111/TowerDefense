@@ -1042,17 +1042,17 @@ class GameState {
             }
         }
 
-        // Draw background texture
-        this.ctx.fillStyle = TEXTURES.BACKGROUND_PATTERNS[Math.floor(this.wave / 5) % TEXTURES.BACKGROUND_PATTERNS.length];
+        // Draw background texture - static pattern
+        this.ctx.fillStyle = TEXTURES.BACKGROUND_PATTERNS[0];
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw path with texture
+        // Draw path with alternating hash patterns
         this.ctx.beginPath();
         this.ctx.moveTo(CONFIG.PATH_POINTS[0].x, CONFIG.PATH_POINTS[0].y);
         CONFIG.PATH_POINTS.forEach(point => {
             this.ctx.lineTo(point.x, point.y);
         });
-        const pathPattern = TEXTURES.PATH_PATTERNS[Math.floor(this.wave / 3) % TEXTURES.PATH_PATTERNS.length];
+        const pathPattern = TEXTURES.PATH_PATTERNS[0];
         this.ctx.strokeStyle = pathPattern;
         this.ctx.lineWidth = 30;
         this.ctx.stroke();
