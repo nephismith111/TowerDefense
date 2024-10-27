@@ -520,8 +520,8 @@ class Enemy {
     update() {
         // Apply slow effect
         if (this.slowDuration > 0) {
-            this.slowDuration -= game.deltaTime * game.speedMultiplier;
-            this.currentSpeed = this.speed * this.slowEffect;
+            this.slowDuration -= game.deltaTime;
+            this.currentSpeed = this.speed * this.slowEffect * game.speedMultiplier;
         } else {
             this.currentSpeed = this.speed;
             this.slowEffect = 1;
@@ -529,13 +529,13 @@ class Enemy {
 
         // Apply freeze effect
         if (this.freezeDuration > 0) {
-            this.freezeDuration -= game.deltaTime * game.speedMultiplier;
+            this.freezeDuration -= game.deltaTime;
             return false; // Enemy is frozen, skip movement
         }
 
         // Apply poison effect
         if (this.taxDuration > 0) {
-            this.taxDuration -= game.deltaTime * game.speedMultiplier;
+            this.taxDuration -= game.deltaTime;
             if (!this.lastTaxTick || Date.now() - this.lastTaxTick >= 1000) {
                 this.health -= this.taxDamage;
                 this.lastTaxTick = Date.now();
@@ -544,14 +544,14 @@ class Enemy {
 
         // Regenerate health if regenerator
         if (this.special === 'regenerate') {
-            this.health = Math.min(this.health + 0.1 * this.maxHealth * (game.deltaTime / 1000), this.maxHealth);
+            this.health = Math.min(this.health + 0.1 * this.maxHealth * (game.deltaTime / 1000) * game.speedMultiplier, this.maxHealth);
         }
 
         // Heal nearby enemies if healer
         if (this.special === 'heal') {
             game.enemies.forEach(enemy => {
                 if (enemy !== this && Math.hypot(enemy.x - this.x, enemy.y - this.y) < 50) {
-                    enemy.health = Math.min(enemy.health + 0.05 * enemy.maxHealth * (game.deltaTime / 1000), enemy.maxHealth);
+                    enemy.health = Math.min(enemy.health + 0.05 * enemy.maxHealth * (game.deltaTime / 1000) * game.speedMultiplier, enemy.maxHealth);
                 }
             });
         }
@@ -916,7 +916,7 @@ class GameState {
         this.lastUpdateTime = now;
 
         // Spawn enemies
-        if (this.enemiesSpawned < this.maxEnemiesPerWave && now - this.lastSpawnTime >= this.spawnInterval / this.speedMultiplier) {
+        if (this.enemiesSpawned < this.maxEnemiesPerWave && now - this.lastSpawnTime >= this.spawnInterval) {
             this.spawnEnemy();
             this.lastSpawnTime = now;
         }
