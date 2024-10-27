@@ -809,7 +809,8 @@ class GameState {
             });
             
             // Update UI
-            const countElement = document.querySelector(`#boost${type.charAt(0).toUpperCase() + type.slice(1)} .powerup-count`);
+            const buttonId = `boost${type.charAt(0).toUpperCase() + type.slice(1)}`;
+            const countElement = document.querySelector(`#${buttonId} .powerup-count`);
             if (countElement) {
                 countElement.textContent = `${powerup.count}/10`;
             }
