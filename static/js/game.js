@@ -686,6 +686,13 @@ class GameState {
         this.ctx = this.canvas.getContext('2d');
         this.money = CONFIG.INITIAL_MONEY;
         this.flashEffects = []; // Track tower destruction animations
+        
+        // Initialize powerup states
+        this.powerups = {
+            rate: { count: 0, cost: 475, multiplier: 1.0 },
+            range: { count: 0, cost: 525, multiplier: 1.0 },
+            power: { count: 0, cost: 500, multiplier: 1.0 }
+        };
         this.speedMultiplier = 1;
         this.towerCounts = {}; // Track number of each tower type
         this.lives = CONFIG.INITIAL_LIVES;
@@ -707,6 +714,7 @@ class GameState {
         this.canSeeInvisible = false; // Assume certain towers can set this to true
 
         this.initializeTowerSelection();
+        this.initializePowerups();
         
         // Initialize speed control
         const speedControl = document.getElementById('gameSpeed');
@@ -744,7 +752,12 @@ class GameState {
                             return;
                         }
                         try {
-                            this.towers.push(new Tower(gridX, gridY, this.selectedTower));
+                            const tower = new Tower(gridX, gridY, this.selectedTower);
+                            // Apply current powerup multipliers
+                            tower.fireRate /= this.powerups.rate.multiplier;
+                            tower.range *= this.powerups.range.multiplier;
+                            tower.damage *= this.powerups.power.multiplier;
+                            this.towers.push(tower);
                             this.money -= towerConfig.cost;
                             this.towerCounts[this.selectedTower]++;
                             Logger.info(`Placed ${this.selectedTower} tower at (${gridX}, ${gridY})`);
@@ -759,6 +772,50 @@ class GameState {
                 }
             }
         });
+    }
+
+    initializePowerups() {
+        // Setup powerup button handlers
+        ['Rate', 'Range', 'Power'].forEach(type => {
+            const btn = document.getElementById(`boost${type}`);
+            if (btn) {
+                btn.onclick = () => this.purchasePowerup(type.toLowerCase());
+            }
+        });
+    }
+
+    purchasePowerup(type) {
+        const powerup = this.powerups[type];
+        if (powerup.count >= 10) return;
+        
+        if (this.money >= powerup.cost) {
+            this.money -= powerup.cost;
+            powerup.count++;
+            powerup.multiplier = 1 + (powerup.count * 0.1);
+            
+            // Update all towers with new multipliers
+            this.towers.forEach(tower => {
+                switch(type) {
+                    case 'rate':
+                        tower.fireRate = CONFIG.TOWER_TYPES[tower.id].fireRate / this.powerups.rate.multiplier;
+                        break;
+                    case 'range':
+                        tower.range = CONFIG.TOWER_TYPES[tower.id].range * this.powerups.range.multiplier;
+                        break;
+                    case 'power':
+                        tower.damage = CONFIG.TOWER_TYPES[tower.id].damage * this.powerups.power.multiplier;
+                        break;
+                }
+            });
+            
+            // Update UI
+            const countElement = document.querySelector(`#boost${type.charAt(0).toUpperCase() + type.slice(1)} .powerup-count`);
+            if (countElement) {
+                countElement.textContent = `${powerup.count}/10`;
+            }
+            
+            Logger.info(`Purchased ${type} powerup (${powerup.count}/10)`);
+        }
     }
 
     initializeTowerSelection() {

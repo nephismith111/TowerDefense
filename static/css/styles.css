@@ -237,3 +237,52 @@ body {
     border: 2px solid #2c3e50;
     border-radius: 5px;
 }
+
+.powerups-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    background: rgba(44, 62, 80, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.powerup-button {
+    background: #34495e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.powerup-button:hover {
+    background: #2c3e50;
+    transform: translateY(-2px);
+}
+
+.powerup-button:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.powerup-cost {
+    color: #f1c40f;
+    font-size: 0.9em;
+}
+
+.powerup-count {
+    color: #3498db;
+    font-size: 0.8em;
+}
