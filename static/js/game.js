@@ -69,11 +69,12 @@ const CONFIG = {
             id: 'sniper',
             cost: 175,
             range: 250,
-            damage: 50,
+            damage: 75,  // Increased damage
             fireRate: 2000,
             color: '#e74c3c',
             name: 'Sniper',
-            description: 'Long range, high damage'
+            description: 'Long range, high damage',
+            maxCount: 2  // Limit to 2 sniper towers
         },
         SPLASH: {
             id: 'splash',
@@ -138,12 +139,13 @@ const CONFIG = {
             id: 'laser',
             cost: 300,
             range: 150,
-            damage: 3,
-            fireRate: 0,
+            damage: 2,  // Reduced damage
+            fireRate: 100,  // Added small delay between shots
             color: '#ffffff',
             name: 'Laser Beam',
             special: 'laser',
             description: 'Continuous damage',
+            maxCount: 3,  // Limit to 3 laser towers
             style: {
                 border: '2px solid #cccccc',
                 shadow: '0 0 20px rgba(255, 255, 255, 0.8)'
@@ -660,6 +662,7 @@ class GameState {
         this.ctx = this.canvas.getContext('2d');
         this.money = CONFIG.INITIAL_MONEY;
         this.flashEffects = []; // Track tower destruction animations
+        this.towerCounts = {}; // Track number of each tower type
         this.lives = CONFIG.INITIAL_LIVES;
         this.wave = 1;
         this.towers = [];
@@ -701,9 +704,16 @@ class GameState {
                 if (this.isValidTowerPosition(gridX, gridY)) {
                     const towerConfig = CONFIG.TOWER_TYPES[this.selectedTower.toUpperCase()];
                     if (this.money >= towerConfig.cost) {
+                        // Check tower limit
+                        this.towerCounts[this.selectedTower] = this.towerCounts[this.selectedTower] || 0;
+                        if (towerConfig.maxCount && this.towerCounts[this.selectedTower] >= towerConfig.maxCount) {
+                            Logger.warn(`Cannot place more than ${towerConfig.maxCount} ${this.selectedTower} towers`);
+                            return;
+                        }
                         try {
                             this.towers.push(new Tower(gridX, gridY, this.selectedTower));
                             this.money -= towerConfig.cost;
+                            this.towerCounts[this.selectedTower]++;
                             Logger.info(`Placed ${this.selectedTower} tower at (${gridX}, ${gridY})`);
                         } catch (error) {
                             Logger.error(error.message);
@@ -760,6 +770,14 @@ class GameState {
             button.appendChild(colorDiv);
             button.appendChild(nameDiv);
             button.appendChild(costDiv);
+            // Add tower count if there's a limit
+            if (tower.maxCount) {
+                const countDiv = document.createElement('div');
+                countDiv.className = 'tower-count';
+                countDiv.textContent = `${this.towerCounts[tower.id] || 0}/${tower.maxCount}`;
+                button.appendChild(countDiv);
+            }
+            
             button.onclick = () => this.selectTower(tower.id);
             
             towerSelection.appendChild(button);
@@ -878,6 +896,11 @@ class GameState {
                                         duration: 500,
                                         radius: 30
                                     });
+                                    // Decrease tower count when destroyed
+                                    const towerType = tower.id.toLowerCase();
+                                    if (this.towerCounts[towerType] > 0) {
+                                        this.towerCounts[towerType]--;
+                                    }
                                     return false;
                                 }
                                 return true;
